@@ -12,6 +12,12 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        $users = User::all();
+        return response()->json($users);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -37,5 +43,39 @@ class UserController extends Controller
             'message' => 'User created successfully',
             'user' => $user,
         ], 201);
+    }
+
+    public function show(User $user)
+    {
+        return response()->json($user);
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'first_name' => 'sometimes|string|max:255',
+            'last_name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'sometimes|integer|exists:roles,id',
+            'verified' => 'sometimes|boolean'
+        ]);
+
+        $user->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User updated successfully',
+            'user' => $user,
+        ]);
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully'
+        ]);
     }
 }
