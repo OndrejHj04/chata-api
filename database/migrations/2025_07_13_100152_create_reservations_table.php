@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservations', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->id();
             $table->date('from_date');
             $table->date('to_date');
             $table->string('name');

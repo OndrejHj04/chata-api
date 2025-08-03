@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservations_forms_changes', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->id();
             $table->integer('reservation_id')->index('reservations_forms_changes');
             $table->string('form_id', 512);
             $table->boolean('direction');
